@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-7+4ss%p*vnn=sse8*i!w*#_3wdc^8%*d@(bu!@$axn90pwj(_m
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['it-solution-demo-kur-wqyvi.run-eu-central1.goorm.io']
 
 
 # Application definition
@@ -77,7 +77,7 @@ WSGI_APPLICATION = 'it_solution_demo_task.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'NAME': str(BASE_DIR / "db.sqlite3"),
     }
 }
 

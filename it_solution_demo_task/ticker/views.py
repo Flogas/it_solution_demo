@@ -1,11 +1,9 @@
 from django.shortcuts import render
-from django.http import HttpResponse
+from django.http import FileResponse
 from .models import Logger
 from datetime import datetime
-import asyncio
 import cv2
 import numpy as np
-import os
 
 
 def index(request):
@@ -17,7 +15,9 @@ def acreate_log(ticker_message):
     log.save()
 
 def getText(request, text):
-    return HttpResponse(create_ticker_video_opencv(text))
+    create_ticker_video_opencv(text)
+    file_path = f"downloading_media//{text}.mp4"
+    return FileResponse(open(file_path, 'rb'), as_attachment=True, filename=f"{text}.mp4")
 
 def create_ticker_video_opencv(ticker_text):
     # Текст из адресной строки
@@ -27,7 +27,7 @@ def create_ticker_video_opencv(ticker_text):
     width, height = 100,100
 
     # Задаём параметры - видеопоток с частотой 24 кадра в секунду
-    out = cv2.VideoWriter(f"{ticker_text}.mp4", cv2.VideoWriter_fourcc(*'mp4v'), 24, (width, height))
+    out = cv2.VideoWriter(f"downloading_media//{ticker_text}.mp4", cv2.VideoWriter_fourcc(*'mp4v'), 24, (width, height))
 
     # Создаем кадр с черным фоном
     frame = np.zeros((height, width, 3), dtype=np.uint8)
@@ -58,8 +58,6 @@ def create_ticker_video_opencv(ticker_text):
     # Закроем тут видеопоток
     out.release()
     acreate_log(ticker_message)
-
-
 
 
 

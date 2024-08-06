@@ -1,16 +1,20 @@
 from django.shortcuts import render
 from django.http import HttpResponse
+from .models import Logger
+from datetime import datetime
+import asyncio
 import cv2
 import numpy as np
 import os
 
 
 def index(request):
-    path = request.path  # получаем запрошенный путь
+    logs = Logger.objects.all()
+    return render(request, "index.html", {"logs": logs})
 
-    return HttpResponse(f"""
-            <p>Path: {path}</p>
-        """)
+def acreate_log(ticker_message):
+    log = Logger(log_text=ticker_message, datetime=datetime.now())
+    log.save()
 
 def getText(request, text):
     return HttpResponse(create_ticker_video_opencv(text))
@@ -53,3 +57,9 @@ def create_ticker_video_opencv(ticker_text):
 
     # Закроем тут видеопоток
     out.release()
+    acreate_log(ticker_message)
+
+
+
+
+

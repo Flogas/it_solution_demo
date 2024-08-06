@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Flogas_it_solutions</title>
+</head>
+<body>
+    <h1>Чтобы создать бегущую строку</h1>
+    <h4>Введите в адресную строку /getText/*необходимый текст* </h4>
+    {% if logs.count > 0 %}
+    <h2>Список запросов</h2>
+    <table>
+        <thead><th>Id</th><th>Текст Запроса</th><th>время</th><th></th></thead>
+        {% for log in logs %}
+        <tr>
+            <td>{{ log.id }}</td>
+            <td>{{ log.log_text }}</td>
+            <td>{{ log.datetime }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+    {% endif %}
+</body>
+</html>

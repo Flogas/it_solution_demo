@@ -8,25 +8,27 @@ import cv2
 import numpy as np
 import os
 
-
 def index(request):
     logs = Logger.objects.all()
     return render(request, "index.html", {"logs": logs})
 
+
 async def acreate_log(ticker_message):
     log = await Logger.objects.acreate(log_text=ticker_message, datetime=datetime.now())
+
 
 def getText(request, text):
     create_ticker_video_opencv(text)
     file_path = f"downloading_media//{text}.mp4"
     return FileResponse(open(file_path, 'rb'), as_attachment=True, filename=f"{text}.mp4")
 
+
 def create_ticker_video_opencv(ticker_text):
     # Текст из адресной строки
     ticker_message = ticker_text
 
     # Размеры видео (ширина x высота)
-    width, height = 100,100
+    width, height = 100, 100
 
     # Задаём параметры - видеопоток с частотой 24 кадра в секунду
     out = cv2.VideoWriter(f"downloading_media//{ticker_text}.mp4", cv2.VideoWriter_fourcc(*'mp4v'), 24, (width, height))
@@ -60,8 +62,4 @@ def create_ticker_video_opencv(ticker_text):
     # Закроем тут видеопоток
     out.release()
     asyncio.run(acreate_log(ticker_message))
-    #download_file(ticker_text)
-
-
-
-
+    # download_file(ticker_text)

@@ -45,13 +45,22 @@ def create_ticker_video_opencv(ticker_text):
     font_thickness = 2
     font_color = (255, 255, 255)  # Белый цвет текста
 
+    # Общая продолжительность видео в кадрах
+    total_frames = 72  # 3 секунды с частотой 24 кадра/сек
+    # Вычисляем длину текста
+    text_size = cv2.getTextSize(ticker_message, font, font_scale, font_thickness)[0]
+    text_width = text_size[0]
+     # Скорость движения текста
+    speed = (text_width + width) / total_frames
+
+
     # Пройдемся по каждому кадру
-    for t in range(72):  # 3 секунды с частотой 24 кадра/сек
+    for t in range(total_frames):  # 3 секунды с частотой 24 кадра/сек
         # Очистка кадра
         frame.fill(0)
 
         # Новые координаты для бегущей строки
-        x -= 10  # Скорость бегущей строки
+        x = width - int(speed * t)
 
         # Вот тут добавим текст
         cv2.putText(frame, ticker_message, (x, y), font, font_scale, font_color, font_thickness)
